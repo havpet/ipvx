@@ -4,6 +4,7 @@ Simple IP lookup tool written in plain PHP
 Features:
 * GET / : IP in plain text
 * GET /host : IP and host in plain text
+* GET /json : IP and host in JSON
 * GET /9.9.9.9 : Info about specific IP in JSON
 * GET /domain.com : Domain blocklist status from Quad9 DNS (for threat intel etc.)
 
