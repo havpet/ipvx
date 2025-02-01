@@ -29,7 +29,7 @@
         }
 
         // /json
-        if($input == "json") {
+        else if($input == "json") {
             header('Content-Type: application/json; charset=utf-8');
 
             $ip_array = Array (
