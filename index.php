@@ -44,7 +44,7 @@
         else if(filter_var($input, FILTER_VALIDATE_IP,FILTER_FLAG_IPV4) || filter_var($input, FILTER_VALIDATE_IP,FILTER_FLAG_IPV6)) {
             header('Content-Type: application/json; charset=utf-8');
 
-            $ip_details = json_decode(file_get_contents("https://ipinfo.io/{$input}/json?token=$apitoken"));
+            $ip_details = json_decode(file_get_contents("https://ipinfo.io/{$input}/json?token={$apitoken}"));
 
             $ip_array = Array (
                 "ip" => $input,
