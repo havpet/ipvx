@@ -1,5 +1,7 @@
 # ipvx
-Simple IP lookup tool written in plain PHP
+Simple IP lookup tool written in plain PHP.
+
+Made specifically for usage with curl.
 
 Features:
 * GET / : IP in plain text
@@ -10,5 +12,5 @@ Features:
 
 ## Usage:
 1. Switch out **$apitoken** with your token from https://ipinfo.io/developers
-2. Host on however you like
+2. Host however you like
 3. Remember to follow the IP lookup site's ToS
