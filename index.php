@@ -11,7 +11,6 @@
 
     $ip = $_SERVER['REMOTE_ADDR'];
     $input = $_GET['input'];
-    $ip_array = null; 
 
     $apitoken = ""; // Your ipinfo.io API token
 
@@ -58,7 +57,7 @@
             echo json_encode($ip_array, JSON_PRETTY_PRINT);
         }
 
-        // ipvx.no/domain.no
+        // /domain.no
         else if(isValidDomain($input)) {
             header('Content-Type: application/json; charset=utf-8');
 
