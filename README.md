@@ -1,5 +1,5 @@
 # ipvx
-IP lookup tool written in plain PHP. Great to avoid having to specify the ip lookup site's API key every time you want to run an IP lookup.
+IP lookup tool written in plain PHP.
 
 Made specifically for usage with curl.
 
@@ -11,6 +11,6 @@ Features:
 * GET /domain.com : Domain blocklist status from Quad9 DNS (for threat intel etc.)
 
 ## Usage:
-1. Switch out **$apitoken** with your token from https://ipinfo.io/developers
+1. Switch out **$apitoken** with your token from https://ipinfo.io/developers or similar ip lookup website
 2. Host however you like
 3. Remember to follow the IP lookup site's ToS
