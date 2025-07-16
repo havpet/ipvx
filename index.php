@@ -1,5 +1,6 @@
 <?php
     session_start();
+    include "functions.php";
 
     if(empty($_SERVER['HTTPS'])) {
         header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
@@ -12,12 +13,13 @@
     $ip = $_SERVER['REMOTE_ADDR'];
     $input = $_GET['input'];
 
-    $ipinfotoken = ""; // Your ipinfo.io API token
-    $abuseipdbtoken = ""; // Your abuseipdb token
+    $ipinfo_token = ""; // Your ipinfo.io API token
+    $abuseipdb_token = ""; // Your abuseipdb.com token
+    $threatfox_token = ""; // Your threatfox.abuse.ch token
 
     $allowed_ip = in_array($_SERVER['REMOTE_ADDR'], ['0.0.0.0']); // Whitelisted IP's for the IP API calls
 
-    // standard ip return
+    // ip return
     if (!isset($input) || $input == "index.php") {
         header('Content-Type: text/plain;');
         echo $ip;
@@ -46,33 +48,21 @@
         else if($allowed_ip && filter_var($input, FILTER_VALIDATE_IP,FILTER_FLAG_IPV4) || filter_var($input, FILTER_VALIDATE_IP,FILTER_FLAG_IPV6)) {
             header('Content-Type: application/json; charset=utf-8');
 
-            $ip_details = json_decode(file_get_contents("https://ipinfo.io/{$input}/json?token={$ipinfotoken}"));
-            
-            $abuse_ip_details = json_decode(file_get_contents(
-                "https://api.abuseipdb.com/api/v2/check?ipAddress={$input}",
-                false,
-                stream_context_create([
-                    'http' => [
-                        'method' => 'GET',
-                        'header' => "Key: {$abuseipdbtoken}"
-                    ]
-                ])
-            ));
-
-            $ip_array = Array (
-                "ip" => $input,
-                "hostname" => $ip_details->hostname,
-                "city" => $ip_details->city,
-                "region" => $ip_details->region,
-                "country" => $ip_details->country,
-                "org" => $ip_details->org,
-                "domain" => $abuse_ip_details->data->domain,
-                "abuse_confidence" => $abuse_ip_details->data->abuseConfidenceScore,
-                "num_abuse_reports" => $abuse_ip_details->data->totalReports,
-                "abuse_info" => "https://www.abuseipdb.com/check/{$input}"
+            echo json_encode(
+                getIpInfo($input, $ipinfo_token, $abuseipdb_token, $threatfox_token), 
+                JSON_PRETTY_PRINT
             );
+        }
 
-            echo json_encode($ip_array, JSON_PRETTY_PRINT);
+        // /domain.com
+        else if($allowed_ip && validateDomainName($input)) {
+            
+            header('Content-Type: application/json; charset=utf-8');
+
+            echo json_encode(
+                getDomainInfo($input, $threatfox_token), 
+                JSON_PRETTY_PRINT
+            );
         }
 
         else {

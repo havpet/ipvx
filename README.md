@@ -1,13 +1,30 @@
 # ipvx
-IP lookup tool in PHP with threat intelligence features.
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/havpet/ipvx?style=flat-square) ![Techstack PHP](https://img.shields.io/badge/techstack-php-blue)
+Quick and simple IP and domain threat intel using multiple data providers.
 
-Features:
-* GET / : IP in plain text
-* GET /host : IP and host in plain text
-* GET /json : IP and host in JSON
-* GET /9.9.9.9 : Info about specific IP in JSON (configured to use ipinfo.io and AbuseIPDB)
+## Features
+### GET / : IP in plain text
+Returns the current IP of the visitor in plain text. This is the default page.
 
-## Usage:
-1. Switch out **$ipinfotoken** with your token from https://ipinfo.io/developers and **$abuseipdbtoken** with your token from https://abuseipdb.com/
-2. Host however you like
-3. Remember to follow the IP lookup site's ToS
+### GET /host : IP and host in plain text
+Returns the current IP and hostname of the visitor in plain text for usage in command line tools or similar.
+
+### GET /json : IP and host in JSON
+Returns the current IP and hostname of the visitor in JSON format for programmatic usage.
+
+### GET /0.0.0.0 : Info about specific IP in JSON
+Returns info about the specified IP in JSON format. Sources: 
+* Basic IP info from https://ipinfo.io/
+* Abuse (spam, bruteforce etc) data from https://abuseipdb.com
+* Malware related data from https://threatfox.abuse.ch/
+
+### GET /domain.com: Info about domain in JSON
+Returns threat data related to specified domain name. Sources:
+* Checks the https://quad9.net/ blocklist
+* Malware related data from https://threatfox.abuse.ch/
+
+## Usage
+1. Obtain tokens from IPinfo (https://ipinfo.io/signup), AbuseIPDB (https://www.abuseipdb.com/register) and Threatfox (https://auth.abuse.ch/).
+2. Add the tokens to the variables in index.php lines 16-18
+3. Add the allowed source IP addresses to the $allowed_ip variable on line 20 to prevent breach of ToS.
+3. Host on any PHP server.
