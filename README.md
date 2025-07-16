@@ -1,5 +1,6 @@
 # ipvx
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/havpet/ipvx?style=flat-square) ![Techstack PHP](https://img.shields.io/badge/techstack-php-blue)
+
 Quick and simple IP and domain threat intel using multiple data providers.
 
 ## Features
