@@ -66,6 +66,7 @@
                 "region" => $ip_details->region,
                 "country" => $ip_details->country,
                 "org" => $ip_details->org,
+                "domain" => $abuse_ip_details->data->domain,
                 "abuse_confidence" => $abuse_ip_details->data->abuseConfidenceScore,
                 "num_abuse_reports" => $abuse_ip_details->data->totalReports,
                 "abuse_info" => "https://www.abuseipdb.com/check/{$input}"
