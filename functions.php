@@ -35,6 +35,7 @@ function getIpInfo($input, $ipinfo_token, $abuseipdb_token, $threatfox_token) {
         "country" => $ip_details->country,
         "org" => $ip_details->org,
         "domain" => $abuse_ip_details->data->domain,
+        "domain_info" => "https://<your_domain>.com/{$abuse_ip_details->data->domain}",  
         "malicious%" => max($abuse_ip_details->data->abuseConfidenceScore, $threatfox_info->data[0]->confidence_level),
         "threat_info" => [
             "abuseipdb_confidence" => $abuse_ip_details->data->abuseConfidenceScore,
@@ -66,6 +67,8 @@ function getDomainInfo($input, $threatfox_token) {
 
     return Array (
         "domain" => $input,
+        "ip" => gethostbyname($input),
+		"ip_info" => 'https://<your_domain>.com/' . gethostbyname($input),
         "quad9" => $quad9_info->blocked,
         "threatfox_type" => $threatfox_info->data[0]->threat_type,
         "threatfox_malware" => $threatfox_info->data[0]->malware,
