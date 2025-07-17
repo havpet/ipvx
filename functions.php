@@ -68,7 +68,7 @@ function getDomainInfo($input, $threatfox_token) {
     return Array (
         "domain" => $input,
         "ip" => gethostbyname($input),
-		"ip_info" => 'https://<your_domain>.com/' . gethostbyname($input),
+	"ip_info" => 'https://<your_domain>.com/' . gethostbyname($input),
         "quad9" => $quad9_info->blocked,
         "threatfox_type" => $threatfox_info->data[0]->threat_type,
         "threatfox_malware" => $threatfox_info->data[0]->malware,
