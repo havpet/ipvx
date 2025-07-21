@@ -1,6 +1,6 @@
 <?php
 
-function getIpInfo($input, $ipinfo_token, $abuseipdb_token, $threatfox_token) {
+function getIpInfo($input, $ipinfo_token, $abuseipdb_token, $ipdata_token) {
 
     $ip_details = json_decode(file_get_contents("https://ipinfo.io/{$input}/json?token={$ipinfo_token}"));
             
@@ -15,20 +15,7 @@ function getIpInfo($input, $ipinfo_token, $abuseipdb_token, $threatfox_token) {
         ])
     ));
 
-    $threatfox_info = json_decode(file_get_contents(
-        "https://threatfox-api.abuse.ch/api/v1/",
-        false,
-        stream_context_create([
-            'http' => [
-                'method' => 'POST',
-                'header' => 'Auth-Key: ' . $threatfox_token,
-                'content' => '{ "query": "search_ioc", "search_term": "' . $input . '", "exact_match": false }'
-            ]
-        ])
-    ));
-
-    $blocklistde_start_time = strtotime("-6 months"); // Last 6 months to ensure fresh data
-    $blocklistde_info = json_decode(file_get_contents("https://api.blocklist.de/api.php?ip={$input}&format=json&start={$blocklistde_start_time}"));
+    $ipdata_details = json_decode(file_get_contents("https://api.ipdata.co/{$input}/threat?api-key={$ipdata_token}"));
 
     return Array (
         "ip" => $input,
@@ -39,26 +26,20 @@ function getIpInfo($input, $ipinfo_token, $abuseipdb_token, $threatfox_token) {
         "org" => $ip_details->org,
         "domain" => $abuse_ip_details->data->domain,
         "domain_info" => $abuse_ip_details->data->domain ? "https://<your_domain>.com/{$abuse_ip_details->data->domain}" : null,  
-        "%malicious_confidence" => max($abuse_ip_details->data->abuseConfidenceScore, $threatfox_info->data[0]->confidence_level),
+        "is_datacenter" => $ipdata_details->is_datacenter,
+        "is_proxy" => $ipdata_details->is_proxy,
+        "is_icloud_relay" => $ipdata_details->is_icloud_relay,
+        "known_malicious" => $abuse_ip_details->data->abuseConfidenceScore > 50 || $ipdata_details->is_threat,
         "threat_intel" => [
             "abuseipdb" => [
-                "confidence" => $abuse_ip_details->data->abuseConfidenceScore,
-                "reports" => $abuse_ip_details->data->totalReports,
-                "link" => "https://www.abuseipdb.com/check/{$input}",
+                "%malicious" => $abuse_ip_details->data->abuseConfidenceScore,
+                "_link" => "https://www.abuseipdb.com/check/{$input}",
             ],
-            "threatfox" => [
-                "confidence" => $threatfox_info->data[0]->confidence_level,
-                "type" => $threatfox_info->data[0]->threat_type,
-                "malware" => $threatfox_info->data[0]->malware,
-                "link" => $threatfox_info->data[0]->id ? "https://threatfox.abuse.ch/ioc/{$threatfox_info->data[0]->id}/" : null
+            "ipdata.co" => [
+                "blocklists" => count($ipdata_details->blocklists)
             ],
-            "blocklist.de" => [
-                "attacks" => $blocklistde_info->attacks,
-                "reports" => $blocklistde_info->reports,
-                "link" => "https://www.blocklist.de/en/view.html?ip={$input}"
-            ], 
             "virustotal" => [
-                "link" => "https://www.virustotal.com/gui/ip-address/{$input}"
+                "_link" => "https://www.virustotal.com/gui/ip-address/{$input}"
             ]
         ]
     );
@@ -84,6 +65,7 @@ function getDomainInfo($input, $threatfox_token) {
         "domain" => $input,
         "ip" => gethostbyname($input),
 	"ip_info" => 'https://<your_domain>.com/' . gethostbyname($input),
+        "known_malicious" => $quad9_info->blocked || $threatfox_info->data[0]->confidence_level > 50 ? "yes" : "no",
         "threat_intel" => [
             "quad9" => [
                 "blocklist" => $quad9_info->blocked
@@ -92,13 +74,13 @@ function getDomainInfo($input, $threatfox_token) {
                 "type" => $threatfox_info->data[0]->threat_type,
                 "malware" => $threatfox_info->data[0]->malware,
                 "confidence" => $threatfox_info->data[0]->confidence_level,
-                "link" => $threatfox_info->data[0]->id ? "https://threatfox.abuse.ch/ioc/{$threatfox_info->data[0]->id}/" : null
+                "_link" => $threatfox_info->data[0]->id ? "https://threatfox.abuse.ch/ioc/{$threatfox_info->data[0]->id}/" : null
             ],
             "virustotal" => [
-                "link" => "https://www.virustotal.com/gui/domain/{$input}"
+                "_link" => "https://www.virustotal.com/gui/domain/{$input}"
             ],
             "urlscan" => [
-                "link" => "https://urlscan.io/search/#{$input}"
+                "_link" => "https://urlscan.io/search/#{$input}"
             ]
         ]
     );

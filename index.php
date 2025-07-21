@@ -16,6 +16,7 @@
     $ipinfo_token = ""; // Your ipinfo.io API token
     $abuseipdb_token = ""; // Your abuseipdb.com token
     $threatfox_token = ""; // Your threatfox.abuse.ch token
+    $ipdata_token = ""; // Your ipdata.co token
 
     $allowed_ip = in_array($_SERVER['REMOTE_ADDR'], ['0.0.0.0']); // Whitelisted IP's for the IP API calls
 
@@ -49,7 +50,7 @@
             header('Content-Type: application/json; charset=utf-8');
 
             echo json_encode(
-                getIpInfo($input, $ipinfo_token, $abuseipdb_token, $threatfox_token), 
+                getIpInfo($input, $ipinfo_token, $abuseipdb_token, $ipdata_token), 
                 JSON_PRETTY_PRINT
             );
         }

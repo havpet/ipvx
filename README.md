@@ -17,8 +17,7 @@ Returns the current IP and hostname of the visitor in JSON format for programmat
 Returns info about the specified IP in JSON format. Sources: 
 * Basic IP info from https://ipinfo.io/
 * Abuse (spam, bruteforce etc) data from https://abuseipdb.com
-* Malware related data from https://threatfox.abuse.ch/
-* Abuse data from https://www.blocklist.de/
+* Blocklist info and security context of IP from https://ipdata.co
 
 ### GET /domain.com : Info about domain in JSON
 Returns threat data related to specified domain name. Sources:
@@ -26,7 +25,7 @@ Returns threat data related to specified domain name. Sources:
 * Malware related data from https://threatfox.abuse.ch/
 
 ## Usage
-1. Obtain tokens from IPinfo (https://ipinfo.io/signup), AbuseIPDB (https://www.abuseipdb.com/register) and Threatfox (https://auth.abuse.ch/).
+1. Obtain tokens from IPinfo (https://ipinfo.io/signup), AbuseIPDB (https://www.abuseipdb.com/register), Threatfox (https://auth.abuse.ch/) and ipdata.co (https://ipdata.co).
 2. Add the tokens to the variables in index.php lines 16-18
 3. Add the allowed source IP addresses to the $allowed_ip variable on line 20 to prevent breach of ToS.
 3. Host on any PHP server.
