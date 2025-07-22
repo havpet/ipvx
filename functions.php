@@ -29,7 +29,7 @@ function getIpInfo($input, $ipinfo_token, $abuseipdb_token, $ipdata_token) {
         "is_datacenter" => $ipdata_details->is_datacenter,
         "is_proxy" => $ipdata_details->is_proxy,
         "is_icloud_relay" => $ipdata_details->is_icloud_relay,
-        "known_malicious" => $abuse_ip_details->data->abuseConfidenceScore > 50 || $ipdata_details->is_threat,
+        "known_malicious" => $abuse_ip_details->data->abuseConfidenceScore > 50 || count($ipdata_details->blocklists) > 1,
         "threat_intel" => [
             "abuseipdb" => [
                 "%malicious" => $abuse_ip_details->data->abuseConfidenceScore,
