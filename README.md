@@ -26,6 +26,6 @@ Returns threat data related to specified domain name. Sources:
 
 ## Usage
 1. Obtain tokens from IPinfo (https://ipinfo.io/signup), AbuseIPDB (https://www.abuseipdb.com/register), Threatfox (https://auth.abuse.ch/) and ipdata.co (https://ipdata.co).
-2. Add the tokens to the variables in index.php lines 16-18
-3. Add the allowed source IP addresses to the $allowed_ip variable on line 20 to prevent breach of ToS.
+2. Add the tokens to the variables in index.php lines 16-19
+3. Add the allowed source IP addresses to the $allowed_ip variable on line 21 to prevent breach of ToS.
 3. Host on any PHP server.
